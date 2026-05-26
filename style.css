@@ -46,7 +46,6 @@ header {
     top: 0;
     z-index: 100;
     flex-wrap: wrap;
-    /* mobile element niche anar jonno*/
 }
 
 .logo-area {
@@ -82,7 +81,7 @@ nav button,
 }
 
 nav button:hover,
-.dropdown:hover .dropbtn {
+.dropbtn.active-btn {
     background-color: var(--accent-color);
     color: white !important;
 }
@@ -108,6 +107,11 @@ nav button:active,
     border-radius: 5px;
     right: 0;
     overflow: hidden;
+    z-index: 200;
+}
+
+.dropdown-content.show-dropdown {
+    display: block;
 }
 
 .dropdown-content a {
@@ -122,10 +126,6 @@ nav button:active,
 .dropdown-content a:hover {
     background-color: var(--accent-color);
     color: white;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
 }
 
 /* container and card */
