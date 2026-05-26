@@ -1,0 +1,128 @@
+/* theme */
+:root {
+    --bg-color: #f4f7f4;
+    --text-color: #1a252c;
+    --accent-color: #27ae60;
+    --nav-bg: rgba(255, 255, 255, 0.8);
+    --dropdown-bg: #ffffff;
+    --card-bg: #ffffff;
+}
+
+.dark-theme {
+    --bg-color: #c8d6ca;
+    --text-color: #0d171c;
+    --accent-color: #1e7e43;
+    --nav-bg: rgba(0, 0, 0, 0.1);
+    --dropdown-bg: #b4c4b6;
+    --card-bg: #e2ebe4;
+}
+
+/* global*/
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.4s ease;
+    background-image: url('https://www.transparenttextures.com/patterns/soft-wallpaper.png');
+    padding-bottom: 30px;
+}
+
+/* header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: var(--nav-bg);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-wrap: wrap; /* mobile element niche anar jonno*/
+}
+
+.logo-area { font-size: 22px; font-weight: bold; display: flex; align-items: center; }
+.logo-area img { width: 35px; margin-right: 8px; }
+
+nav { display: flex; align-items: center; flex-wrap: wrap; }
+nav button, .dropbtn {
+    background: none; border: none; font-size: 16px; font-weight: 600;
+    color: var(--text-color); padding: 10px 12px; margin-left: 5px;
+    border-radius: 5px; cursor: pointer; transition: all 0.2s ease;
+}
+nav button:hover, .dropdown:hover .dropbtn { background-color: var(--accent-color); color: white !important; }
+nav button:active, .dropbtn:active, .btn-submit:active { transform: scale(0.95); }
+
+/* dropdown menu*/
+.dropdown { position: relative; display: inline-block; }
+.dropdown-content {
+    display: none; position: absolute; background-color: var(--dropdown-bg);
+    min-width: 160px; box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+    border-radius: 5px; right: 0; overflow: hidden;
+}
+.dropdown-content a {
+    color: var(--text-color); padding: 12px 16px; text-decoration: none;
+    display: block; font-weight: 500; font-size: 15px;
+}
+.dropdown-content a:hover { background-color: var(--accent-color); color: white; }
+.dropdown:hover .dropdown-content { display: block; }
+
+/* container and card */
+.container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+.section { display: none; animation: fadeIn 0.5s ease; }
+.active-section { display: block; }
+
+.card {
+    background: var(--card-bg); padding: 25px; border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; margin-bottom: 20px;
+}
+
+/* pic, text , audio sequence */
+.section-img {
+    width: 100%; max-height: 250px; object-fit: cover; 
+    border-radius: 8px; margin-bottom: 20px;
+}
+.poipoi-text { font-size: 20px; font-weight: bold; line-height: 1.6; margin-bottom: 20px; }
+.section-audio { width: 100%; margin-top: 20px; outline: none; }
+
+/* elements */
+.form-group { text-align: left; margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+input, select {
+    width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px;
+    font-size: 16px; box-sizing: border-box; background: #fff; color: #333;
+}
+.btn-submit {
+    background-color: var(--accent-color); color: white; border: none;
+    padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 6px;
+    cursor: pointer; width: 100%; transition: all 0.2s; margin-top: 10px;
+}
+
+.dash-p { font-size: 18px; margin: 10px 0; }
+.total-amount { font-size: 22px; color: var(--accent-color); font-weight: bold; }
+.filter-area { display: flex; gap: 10px; margin-bottom: 20px; }
+
+/* responsive table */
+.table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 6px; }
+table { width: 100%; border-collapse: collapse; background: #fff; color: #333; min-width: 400px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+th { background-color: var(--accent-color); color: white; }
+tr:hover { background-color: #f9f9f9; }
+
+.love-msg { color: #27ae60; font-weight: bold; font-style: italic; margin: 15px 0; }
+.sad-msg { color: #e74c3c; font-weight: bold; font-style: italic; margin: 15px 0; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* 📱 (Responsive Breakpoints) */
+@media (max-width: 600px) {
+    header { flex-direction: column; text-align: center; padding: 10px; }
+    nav { margin-top: 10px; justify-content: center; width: 100%; }
+    nav button, .dropbtn { font-size: 14px; padding: 8px 10px; margin: 2px; }
+    .poipoi-text { font-size: 16px; }
+    .card { padding: 15px; }
+    .section-img { max-height: 180px; }
+}

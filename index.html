@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en+bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoiPoi - পইপই করে হিসাব!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="images/Logo.png" type="image/x-icon">
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="images/Logo.png" alt="Logo">
+            <span>PoiPoi</span>
+        </div>
+        <nav>
+            <button onclick="showSection('home')" class="nav-btn">Home</button>
+            
+            <div class="dropdown">
+                <button class="dropbtn">Hisab ▾</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="showSection('dashboard')">📊 Dashboard</a>
+                    <a href="#" onclick="showSection('priyojon')">❤️ Priyojon </a>
+                    <a href="#" onclick="showSection('data-entry')">✍️ Data entry</a>
+                    <a href="#" onclick="showSection('diyeche')">🎉 Diyeche kara </a>
+                    <a href="#" onclick="showSection('dey-ni')">😢 Deyni kara </a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn">Setting ▾</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="toggleTheme()">🎨 Theme Change</a>
+                    <a href="#" onclick="resetData()" style="color: #e74c3c !important;">⚠️ Reset All Data</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <div id="home" class="section active-section">
+            <div class="card">
+                <img src="images/home.webp" alt="Home Image" class="section-img">
+                <p class="poipoi-text">
+                    "পই পই করে হিসাব রাখতে হবে! জীবনের ভালো খারাপ, বিশেষ করে দুঃসময়ে কে পাশে ছিল আর কে ছিল না, তার নিখুঁত হিসাব রাখা অত্যন্ত জরুরি।"
+                </p>
+                <audio controls class="section-audio">
+                    <source src="music/home.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <div id="dashboard" class="section">
+            <div class="card">
+                <img src="images/dashboa.png!w700wp" alt="Dashboard Image" class="section-img">
+                <h2>📊 Dashboard Overview </h2>
+                <hr>
+                <p class="dash-p"> আজ পর্যন্ত মোট প্রিয়জন তালিকাভুক্ত: <strong id="dash-total-priyojon">০</strong> জন</p>
+                <p class="dash-p total-amount">💰 মোট সংগৃহীত ঈদি: <strong id="dash-total-amount">০</strong> টাকা</p>
+                <audio id="dashboard-audio" class="section-audio" loop>
+                    <source src="music/dashboard.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <div id="priyojon" class="section">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=500" alt="Priyojon Image" class="section-img">
+                <h2>❤️ প্রিয়জন নাম এন্ট্রি (Master List)</h2>
+                <div class="form-group">
+                    <label>প্রিয়জনের নাম লিখুন:</label>
+                    <input type="text" id="priyojon-name" placeholder="উদা: আব্বু, আম্মু, বড় ভাই">
+                </div>
+                <button class="btn-submit" onclick="addPriyojon()">তালিকায় যোগ করুন</button>
+                
+                <h3>📋 আপনার প্রিয়জনদের তালিকা</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr><th>নাম</th><th>সর্বমোট দিয়েছে (টাকা)</th></tr>
+                        </thead>
+                        <tbody id="priyojon-table-body"></tbody>
+                    </table>
+                </div>
+                <audio id="priyojon-audio" class="section-audio" loop>
+                    <source src="music/priyojon.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <div id="data-entry" class="section">
+            <div class="card">
+                <img src="images/data.jpg" alt="Data Entry Image" class="section-img">
+                <h2>✍️ নতুন ঈদি ডাটা এন্ট্রি</h2>
+                <div class="form-group">
+                    <label>প্রিয়জন সিলেক্ট করুন:</label>
+                    <select id="entry-name-select"></select>
+                </div>
+                <div class="form-group">
+                    <label>বছর (Year):</label>
+                    <select id="entry-year">
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>কোন ঈদ:</label>
+                    <select id="entry-eid">
+                        <option value="ঈদুল ফিতর">ঈদুল ফিতর</option>
+                        <option value="ঈদুল আজহা">ঈদুল আজহা</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>টাকার পরিমাণ:</label>
+                    <input type="number" id="entry-amount" placeholder="উদা: ৫০০">
+                </div>
+                <button class="btn-submit" onclick="submitEidiEntry()">হিসাব এন্ট্রি করুন 🚀</button>
+                <audio id="data-entry-audio" class="section-audio" loop>
+                    <source src="music/data.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <div id="diyeche" class="section">
+            <div class="card">
+                <img src="images/diyeche.jpg" alt="Diyeche Image" class="section-img">
+                <h2>🎉 যারা অলরেডি সালামি দিয়েছে</h2>
+                <div class="filter-area">
+                    <select id="filter-diyeche-year" onchange="renderDiyeche()"><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option></select>
+                    <select id="filter-diyeche-eid" onchange="renderDiyeche()"><option value="ঈদুল ফিতর">ঈদুল ফিতর</option><option value="ঈদুল আজহা">ঈদুল আজহা</option></select>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>নাম</th><th>পরিমাণ (টাকা)</th></tr></thead>
+                        <tbody id="diyeche-table-body"></tbody>
+                    </table>
+                </div>
+                <p class="love-msg">"মানবতার আলো এখনো নিভে যায়নি 🌙 ❤️"</p>
+                <p class="love-msg">স্মৃতির খাতায় এদের নাম গোল্ডেন মার্কার দিয়ে লেখা থাকবে ✨</p>
+                <audio id="diyeche-audio" class="section-audio" loop>
+                    <source src="music/diyeche.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <div id="dey-ni" class="section">
+            <div class="card">
+                <img src="images/deyni.jpg" alt="Dey Ni Image" class="section-img">
+                <h2>😢 যারা এই ঈদে এখনো টাকা দেয়নি!</h2>
+                <div class="filter-area">
+                    <select id="filter-deyni-year" onchange="renderDeyNi()"><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option></select>
+                    <select id="filter-deyni-eid" onchange="renderDeyNi()"><option value="ঈদুল ফিতর">ঈদুল ফিতর</option><option value="ঈদুল আজহা">ঈদুল আজহা</option></select>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>নাম</th><th>অবস্থা</th></tr></thead>
+                        <tbody id="deyni-table-body"></tbody>
+                    </table>
+                </div>
+                <p class="sad-msg">"টাকা ক্ষণস্থায়ী, কিন্তু কে রাখলো আর কে রাখলো না, তার হিসাব চিরস্থায়ী "</p>
+                <p class="sad-msg">কে আপন, কে পর—ঈদের সালামিই অনেক কিছু বলে দেয় 🌙</p>
+                <audio id="deyni-audio" class="section-audio" loop>
+                    <source src="music/dey-ni.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
