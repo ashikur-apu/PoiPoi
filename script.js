@@ -58,6 +58,14 @@ function setupDropdownListeners() {
 
 // audio auto playback logic
 function showSection(sectionId) {
+    // ⬇️ [বড় ভাইয়ের হেডার ড্রপডাউন বাগ ফিক্স] লিংকে ক্লিক করলেই Hisab/Setting মেনু বন্ধ করার কোড
+    document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+        dropdown.style.display = 'none'; // মেনুটা তৎক্ষণাৎ লুকিয়ে ফেলবে
+        setTimeout(() => {
+            dropdown.style.display = ''; // ১০০ মিলি-সেকেন্ড পর আবার সিএসএস ডিফল্ট অবস্থায় ফিরিয়ে আনবে
+        }, 100);
+    });
+
     // screen hide
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active-section'));
     // screen show
