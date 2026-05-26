@@ -1,15 +1,14 @@
-
-
 // browser local to previous memory read
 let priyojonList = JSON.parse(localStorage.getItem('priyojonList')) || [];
 let eidiRecords = JSON.parse(localStorage.getItem('eidiRecords')) || [];
 
-//Jegula run hobe
+// Jegula run hobe
 document.addEventListener("DOMContentLoaded", () => {
-    initTheme();       // আগের থিম (ডার্ক/লাইট) সেট করবে
-    populateYears();   // বছরের ড্রপডাউন ডাইনামিকলি তৈরি করবে
-    updateDropdowns(); // প্রিয়জনদের নামের ড্রপডাউন লোড করবে
-    renderAll();       // সব টেবিল ও ড্যাশবোর্ডের ডাটা স্ক্রিনে দেখাবে
+    initTheme();       // Theme set
+    populateYears();   // dynamicaly make
+    updateDropdowns(); // priyojon dropdown load
+    setupDropdownListeners(); // dropdown load
+    renderAll();       // single screen data
 });
 
 // automatic dynamic logic[10years]
@@ -32,6 +31,28 @@ function populateYears() {
             opt.innerText = year;
             select.appendChild(opt);
         }
+    });
+}
+
+// drown automatcion update
+function setupDropdownListeners() {
+    const dropdowns = [
+        document.getElementById('entry-name-select'),
+        document.getElementById('entry-year'),
+        document.getElementById('entry-eid'),
+        document.getElementById('filter-diyeche-year'),
+        document.getElementById('filter-diyeche-eid'),
+        document.getElementById('filter-deyni-year'),
+        document.getElementById('filter-deyni-eid')
+    ];
+
+    dropdowns.forEach(select => {
+        if (!select) return;
+        // option select korle dropdown
+        select.addEventListener('change', () => {
+            select.blur(); // dropdown menu close
+            renderAll();   // option change, data table update
+        });
     });
 }
 
@@ -94,7 +115,7 @@ function showSection(sectionId) {
 // Proyojon name entry
 function addPriyojon() {
     let nameInput = document.getElementById('priyojon-name').value.trim();
-    if(nameInput === "") return alert("দয়া করে একটি নাম লিখুন!");
+    if(nameInput === "") return alert("দয়া করে একটি নাম লিখুন!");
     
     if(!priyojonList.includes(nameInput)) {
         priyojonList.push(nameInput);
@@ -103,7 +124,7 @@ function addPriyojon() {
         updateDropdowns();
         renderAll();
     } else {
-        alert("এই নাম অলরেডি তালিকায় আছে!");
+        alert("এই নাম অলরেডি তালিকায় আছে!");
     }
 }
 
@@ -112,6 +133,13 @@ function updateDropdowns() {
     let select = document.getElementById('entry-name-select');
     if(!select) return;
     select.innerHTML = "";
+    
+    // default empty option
+    let defaultOpt = document.createElement('option');
+    defaultOpt.value = "";
+    defaultOpt.innerText = "-- নাম সিলেক্ট করুন --";
+    select.appendChild(defaultOpt);
+
     priyojonList.forEach(name => {
         let opt = document.createElement('option');
         opt.value = name;
@@ -127,8 +155,8 @@ function submitEidiEntry() {
     let eid = document.getElementById('entry-eid').value;
     let amount = parseFloat(document.getElementById('entry-amount').value);
 
-    if(!name) return alert("আগে প্রিয়জন সেকশনে গিয়ে নাম এন্ট্রি করুন!");
-    if(isNaN(amount) || amount <= 0) return alert("দয়া করে সঠিক টাকার পরিমাণ লিখুন!");
+    if(!name) return alert("দয়া করে একজন প্রিয়জনের নাম সিলেক্ট করুন!");
+    if(isNaN(amount) || amount <= 0) return alert("দয়া করে সঠিক টাকার পরিমাণ লিখুন!");
 
     let existingIndex = eidiRecords.findIndex(r => r.name === name && r.year === year && r.eid === eid);
     if(existingIndex > -1) {
@@ -139,8 +167,9 @@ function submitEidiEntry() {
 
     localStorage.setItem('eidiRecords', JSON.stringify(eidiRecords));
     document.getElementById('entry-amount').value = "";
-    alert("পইপই করে হিসাব খাতায় তোলা হলো! 📝");
-    // showSection('dashboard'); // auto transfer
+    document.getElementById('entry-name-select').value = ""; // সাবমিটের পর নাম রিসেট এবং ড্রপডাউন ক্লোজ
+    alert("পইপই করে হিসাব খাতায় তোলা হলো! 📝");
+    renderAll();
 }
 
 // all table update
@@ -173,10 +202,14 @@ function renderPriyojonTable() {
 
 // jara tk diyeche tader alada kora
 function renderDiyeche() {
-    let year = document.getElementById('filter-diyeche-year').value;
-    let eid = document.getElementById('filter-diyeche-eid').value;
+    let yearSelect = document.getElementById('filter-diyeche-year');
+    let eidSelect = document.getElementById('filter-diyeche-eid');
     let tbody = document.getElementById('diyeche-table-body');
-    if(!tbody) return;
+    
+    if(!yearSelect || !eidSelect || !tbody) return;
+    
+    let year = yearSelect.value;
+    let eid = eidSelect.value;
     tbody.innerHTML = "";
 
     let filtered = eidiRecords.filter(r => r.year === year && r.eid === eid);
@@ -187,10 +220,14 @@ function renderDiyeche() {
 
 // jara tk dey nai tader alada kora
 function renderDeyNi() {
-    let year = document.getElementById('filter-deyni-year').value;
-    let eid = document.getElementById('filter-deyni-eid').value;
+    let yearSelect = document.getElementById('filter-deyni-year');
+    let eidSelect = document.getElementById('filter-deyni-eid');
     let tbody = document.getElementById('deyni-table-body');
-    if(!tbody) return;
+    
+    if(!yearSelect || !eidSelect || !tbody) return;
+    
+    let year = yearSelect.value;
+    let eid = eidSelect.value;
     tbody.innerHTML = "";
 
     let givenNames = eidiRecords.filter(r => r.year === year && r.eid === eid).map(r => r.name);
@@ -215,7 +252,7 @@ function toggleTheme() {
 function resetData() {
     if(confirm("পইপই খাতার সব ডাটা ডিলিট করতে চান? এই কাজ আর ফেরত আনা যাবে না!")) {
         localStorage.clear();
-        alert("সব খাতা সাফ করা হয়েছে!");
+        alert("সব খাতা সাফ করা হয়েছে!");
         location.reload();
     }
 }
