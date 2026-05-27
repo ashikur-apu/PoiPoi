@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     populateYears();   // dynamicaly make
     updateDropdowns(); // priyojon dropdown load
     setupDropdownListeners(); // dropdown load
+    setupHeaderDropdowns();   // ক্লিক টু টগল লজিক লোড
     renderAll();       // single screen data
 });
 
@@ -34,7 +35,7 @@ function populateYears() {
     });
 }
 
-// drown automatcion update
+// drown automation update
 function setupDropdownListeners() {
     const dropdowns = [
         document.getElementById('entry-name-select'),
@@ -48,36 +49,70 @@ function setupDropdownListeners() {
 
     dropdowns.forEach(select => {
         if (!select) return;
-        // option select korle dropdown
         select.addEventListener('change', () => {
-            select.blur(); // dropdown menu close
-            renderAll();   // option change, data table update
+            select.blur(); 
+            renderAll();   
         });
     });
 }
 
-// audio auto playback logic
-function showSection(sectionId) {
-    // ⬇️ [বড় ভাইয়ের হেডার ড্রপডাউন বাগ ফিক্স] লিংকে ক্লিক করলেই Hisab/Setting মেনু বন্ধ করার কোড
-    document.querySelectorAll('.dropdown-content').forEach(dropdown => {
-        dropdown.style.display = 'none'; // মেনুটা তৎক্ষণাৎ লুকিয়ে ফেলবে
-        setTimeout(() => {
-            dropdown.style.display = ''; // ১০০ মিলি-সেকেন্ড পর আবার সিএসএস ডিফল্ট অবস্থায় ফিরিয়ে আনবে
-        }, 100);
+// মোবাইল এবং পিসিতে ক্লিক করে Hisab/Setting মেনু ওপেন-ক্লোজ করার লজিক
+function setupHeaderDropdowns() {
+    const dropbtns = document.querySelectorAll('.dropbtn');
+    
+    dropbtns.forEach(btn => {
+        // আগের কোনো ইভেন্ট লিসেনার থাকলে তা রিমুভ করার জন্য এই ট্রিক
+        btn.onclick = (e) => {
+            toggleDropdown(e);
+        };
     });
 
-    // screen hide
+    document.onclick = () => {
+        document.querySelectorAll('.dropdown-content').forEach(content => {
+            content.classList.remove('show-dropdown');
+        });
+        document.querySelectorAll('.dropbtn').forEach(btn => {
+            btn.classList.remove('active-btn');
+        });
+    };
+}
+
+// HTML এবং JS উভয় জায়গা থেকে আসা ক্লিক হ্যান্ডেল করার মেইন ফাংশন
+function toggleDropdown(event) {
+    event.stopPropagation();
+    const btn = event.currentTarget;
+    const currentContent = btn.nextElementSibling;
+    
+    // বাকি সব খোলা ড্রপডাউন বন্ধ করা
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+        if (content !== currentContent) content.classList.remove('show-dropdown');
+    });
+    document.querySelectorAll('.dropbtn').forEach(b => {
+        if (b !== btn) b.classList.remove('active-btn');
+    });
+
+    // কারেন্ট মেনু টগল করা
+    currentContent.classList.toggle('show-dropdown');
+    btn.classList.toggle('active-btn');
+}
+
+// audio auto playback logic
+function showSection(sectionId) {
+    document.querySelectorAll('.dropdown-content').forEach(content => {
+        content.classList.remove('show-dropdown');
+    });
+    document.querySelectorAll('.dropbtn').forEach(btn => {
+        btn.classList.remove('active-btn');
+    });
+
     document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active-section'));
-    // screen show
     document.getElementById(sectionId).classList.add('active-section');
     
-    // one to another tab audio off
     document.querySelectorAll('audio').forEach(audio => {
         audio.pause();
         audio.currentTime = 0; 
     });
 
-    // dashboard audio
     if (sectionId === 'dashboard') {
         let dashboardAudio = document.getElementById('dashboard-audio');
         if (dashboardAudio) {
@@ -85,7 +120,6 @@ function showSection(sectionId) {
         }
     }
 
-    // priyojon audio
     if (sectionId === 'priyojon') {
         let priyojonAudio = document.getElementById('priyojon-audio');
         if (priyojonAudio) {
@@ -93,7 +127,6 @@ function showSection(sectionId) {
         }
     }
 
-    // data entry audio
     if (sectionId === 'data-entry') {
         let dataEntryAudio = document.getElementById('data-entry-audio');
         if (dataEntryAudio) {
@@ -101,7 +134,6 @@ function showSection(sectionId) {
         }
     }
 
-    // diyeche kara audio
     if (sectionId === 'diyeche') {
         let diyecheAudio = document.getElementById('diyeche-audio');
         if (diyecheAudio) {
@@ -109,7 +141,6 @@ function showSection(sectionId) {
         }
     }
 
-    // deyni kara audio
     if (sectionId === 'dey-ni') {
         let deyniAudio = document.getElementById('deyni-audio');
         if (deyniAudio) {
@@ -117,7 +148,7 @@ function showSection(sectionId) {
         }
     }
 
-    renderAll(); // data refresh
+    renderAll(); 
 }
 
 // Proyojon name entry
@@ -142,7 +173,6 @@ function updateDropdowns() {
     if(!select) return;
     select.innerHTML = "";
     
-    // default empty option
     let defaultOpt = document.createElement('option');
     defaultOpt.value = "";
     defaultOpt.innerText = "-- নাম সিলেক্ট করুন --";
@@ -175,7 +205,7 @@ function submitEidiEntry() {
 
     localStorage.setItem('eidiRecords', JSON.stringify(eidiRecords));
     document.getElementById('entry-amount').value = "";
-    document.getElementById('entry-name-select').value = ""; // সাবমিটের পর নাম রিসেট এবং ড্রপডাউন ক্লোজ
+    document.getElementById('entry-name-select').value = ""; 
     alert("পইপই করে হিসাব খাতায় তোলা হলো! 📝");
     renderAll();
 }
